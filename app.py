@@ -4,9 +4,6 @@ import math
 import os
 import io
 
-# ─────────────────────────────────────────────
-#  CONFIGURAÇÃO DA PÁGINA
-# ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Domínio Sistemas | Divisor de XML",
     page_icon="📂",
@@ -14,9 +11,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ─────────────────────────────────────────────
-#  TEMA ESCURO – THOMSON REUTERS / DOMÍNIO
-# ─────────────────────────────────────────────
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -24,21 +18,13 @@ st.markdown("""
   html, body, [class*="css"] {
     font-family: 'Inter', 'Segoe UI', sans-serif !important;
   }
-  .stApp {
-    background-color: #1A1A1A !important;
-  }
+  .stApp { background-color: #1A1A1A !important; }
   .block-container {
     max-width: 700px !important;
     padding: 2.5rem 2rem 3rem 2rem !important;
   }
 
-  /* ── Header ── */
-  .tr-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 6px;
-  }
+  .tr-header { display:flex; align-items:center; gap:14px; margin-bottom:6px; }
   .tr-logo-dots {
     display: grid;
     grid-template-columns: repeat(4, 8px);
@@ -50,7 +36,7 @@ st.markdown("""
   .tr-dot.mid { opacity:0.55; }
   .tr-brand      { display:flex; flex-direction:column; line-height:1.1; }
   .tr-brand-main { font-size:1.3rem; font-weight:700; color:#F0F0F0; letter-spacing:-0.3px; }
-  .tr-brand-sub  { font-size:0.72rem; font-weight:400; color:#FF8000; letter-spacing:2px; text-transform:uppercase; }
+  .tr-brand-sub  { font-size:0.72rem; color:#FF8000; letter-spacing:2px; text-transform:uppercase; }
 
   .tr-divider {
     height: 2px;
@@ -58,8 +44,6 @@ st.markdown("""
     margin: 14px 0 28px 0;
     border-radius: 2px;
   }
-
-  /* ── Labels de seção ── */
   .section-label {
     font-size: 0.72rem;
     font-weight: 600;
@@ -68,8 +52,6 @@ st.markdown("""
     text-transform: uppercase;
     margin-bottom: 10px;
   }
-
-  /* ── Info / Success / Error ── */
   .tr-info {
     background: #1E1E1E;
     border-left: 3px solid #FF8000;
@@ -105,72 +87,18 @@ st.markdown("""
     color: #FF9999;
   }
 
-  /* ── Cards de lote ── */
-  .lote-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 8px;
-  }
-  .lote-card {
-    background: #242424;
-    border: 2px solid #333333;
-    border-radius: 12px;
-    padding: 20px 14px;
-    text-align: center;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .lote-card:hover {
-    border-color: #FF8000;
-    background: #2A2A2A;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px #FF800033;
-  }
-  .lote-card .lote-num {
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: #FF8000;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .lote-card .lote-label {
-    font-size: 0.7rem;
-    color: #666666;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-  }
-  .lote-card .lote-desc {
-    font-size: 0.75rem;
-    color: #555555;
-    margin-top: 6px;
-  }
-
-  /* ── Preview bar ── */
   .preview-bar {
     background: #1E1E1E;
     border: 1px solid #2A2A2A;
     border-radius: 8px;
     padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-size: 0.83rem;
     color: #888888;
-    flex-wrap: wrap;
   }
-  .preview-bar .pv-val {
-    color: #FF8000;
-    font-weight: 700;
-    font-size: 1rem;
-  }
-  .preview-bar .pv-sep {
-    color: #333333;
-    margin: 0 4px;
-  }
+  .pv-val { color: #FF8000; font-weight: 700; font-size: 1rem; }
 
-  /* ── Tabela ── */
   .batch-table {
     width: 100%;
     border-collapse: collapse;
@@ -211,52 +139,42 @@ st.markdown("""
     border-color: #4CAF5055 !important;
   }
 
-  /* ── Radio horizontal ── */
-  div[data-testid="stRadio"] > div {
-    display: flex !important;
-    gap: 12px !important;
-    flex-direction: row !important;
-  }
-  div[data-testid="stRadio"] > div > label {
+  /* ── Card de lote via container nativo ── */
+  div[data-testid="stVerticalBlockBorderWrapper"] {
     background: #242424 !important;
     border: 2px solid #333333 !important;
     border-radius: 12px !important;
-    padding: 16px 20px !important;
-    flex: 1 !important;
-    text-align: center !important;
-    cursor: pointer !important;
+    padding: 4px !important;
     transition: all 0.2s !important;
   }
-  div[data-testid="stRadio"] > div > label:hover {
+  div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     border-color: #FF8000 !important;
-    background: #2A2A2A !important;
-  }
-  div[data-testid="stRadio"] > div > label[data-selected="true"] {
-    border-color: #FF8000 !important;
-    background: #2A1F10 !important;
-    box-shadow: 0 0 0 3px #FF800033 !important;
-  }
-  div[data-testid="stRadio"] > div > label > div > p {
-    color: #F0F0F0 !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-  }
-  div[data-testid="stRadio"] > div > label > div:first-child {
-    display: none !important;
+    box-shadow: 0 4px 20px #FF800033 !important;
   }
 
-  /* ── File uploader ── */
-  [data-testid="stFileUploaderDropzone"] {
-    background-color: #242424 !important;
-    border: 1.5px dashed #444444 !important;
-    border-radius: 10px !important;
-  }
-  [data-testid="stFileUploaderDropzone"] p   { color: #888888 !important; }
-  [data-testid="stFileUploaderDropzone"] svg { fill: #FF8000 !important; }
-
-  /* ── Botão principal ── */
+  /* ── Botões dos cards ── */
   .stButton > button {
     width: 100% !important;
+    background: transparent !important;
+    color: #555555 !important;
+    border: 1px solid #333333 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+    margin-top: 4px !important;
+  }
+  .stButton > button:hover {
+    background: #FF800015 !important;
+    color: #FF8000 !important;
+    border-color: #FF8000 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* ── Botão processar ── */
+  .btn-processar > div > .stButton > button {
     background: linear-gradient(135deg, #FF8000 0%, #E06000 100%) !important;
     color: #FFFFFF !important;
     border: none !important;
@@ -264,17 +182,15 @@ st.markdown("""
     padding: 14px 20px !important;
     font-size: 0.95rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.3px !important;
-    transition: all 0.2s !important;
     margin-top: 8px !important;
   }
-  .stButton > button:hover {
+  .btn-processar > div > .stButton > button:hover {
     background: linear-gradient(135deg, #FF9520 0%, #FF8000 100%) !important;
     box-shadow: 0 4px 20px #FF800055 !important;
     transform: translateY(-1px) !important;
   }
 
-  /* ── Botão de download ── */
+  /* ── Botão download ── */
   .stDownloadButton > button {
     width: 100% !important;
     background: #242424 !important;
@@ -320,13 +236,23 @@ st.markdown("""
     font-weight: 700 !important;
   }
 
-  /* ── Esconde padrão Streamlit ── */
+  /* ── File uploader ── */
+  [data-testid="stFileUploaderDropzone"] {
+    background-color: #242424 !important;
+    border: 1.5px dashed #444444 !important;
+    border-radius: 10px !important;
+  }
+  [data-testid="stFileUploaderDropzone"] p   { color: #888888 !important; }
+  [data-testid="stFileUploaderDropzone"] svg { fill: #FF8000 !important; }
+
+  /* ── Texto geral ── */
+  p, span, div { color: inherit; }
+
   #MainMenu { visibility: hidden; }
   footer    { visibility: hidden; }
   header    { visibility: hidden; }
 
   hr { border-color: #333333 !important; margin: 24px 0 !important; }
-
   ::-webkit-scrollbar       { width: 6px; }
   ::-webkit-scrollbar-track { background: #1A1A1A; }
   ::-webkit-scrollbar-thumb { background: #444444; border-radius: 3px; }
@@ -345,16 +271,15 @@ OPCOES_LOTE = {
 }
 DESCRICOES_LOTE = {
     "1.000 XMLs":  "Ideal para testes e volumes pequenos",
-    "5.000 XMLs":  "Recomendado para uso padr&atilde;o",
-    "10.000 XMLs": "Para volumes grandes e importa&ccedil;&otilde;es em massa",
+    "5.000 XMLs":  "Recomendado para uso padrão",
+    "10.000 XMLs": "Para volumes grandes e importações em massa",
 }
 
 
 # ─────────────────────────────────────────────
-#  FUNÇÕES AUXILIARES
+#  FUNÇÕES
 # ─────────────────────────────────────────────
 def ler_xmls_do_zip(file_bytes: bytes) -> list:
-    """Lê o ZIP e retorna lista ordenada de caminhos XML encontrados."""
     buf = io.BytesIO(file_bytes)
     with zipfile.ZipFile(buf, "r") as z:
         names = z.namelist()
@@ -366,13 +291,12 @@ def ler_xmls_do_zip(file_bytes: bytes) -> list:
     ])
 
 
-def fmt(numero: int) -> str:
-    """Formata número com ponto como separador de milhar (padrão BR)."""
-    return f"{numero:,}".replace(",", ".")
+def fmt(n: int) -> str:
+    return f"{n:,}".replace(",", ".")
 
 
 # ─────────────────────────────────────────────
-#  HEADER / LOGO
+#  HEADER
 # ─────────────────────────────────────────────
 st.markdown("""
 <div class="tr-header">
@@ -387,67 +311,55 @@ st.markdown("""
     <div class="tr-dot dim"></div><div class="tr-dot mid"></div>
   </div>
   <div class="tr-brand">
-    <span class="tr-brand-main">Dom&iacute;nio Sistemas</span>
+    <span class="tr-brand-main">Domínio Sistemas</span>
     <span class="tr-brand-sub">Thomson Reuters</span>
   </div>
 </div>
 <div class="tr-divider"></div>
 """, unsafe_allow_html=True)
 
-
-# ─────────────────────────────────────────────
-#  TÍTULO
-# ─────────────────────────────────────────────
-st.markdown('<div class="section-label">Utilit&aacute;rio de Arquivos</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-label">Utilitário de Arquivos</div>', unsafe_allow_html=True)
 st.markdown("## Divisor de XMLs em Lotes")
 st.markdown(
     "<p style='color:#888888; font-size:0.9rem; margin-top:-10px; margin-bottom:24px;'>"
-    "Fa&ccedil;a o upload de um ZIP com seus XMLs, escolha o tamanho do lote e baixe "
-    "cada lote j&aacute; compactado individualmente &mdash; pronto para importar no sistema."
+    "Faça o upload de um ZIP com seus XMLs, escolha o tamanho do lote e baixe "
+    "cada lote já compactado individualmente — pronto para importar no sistema."
     "</p>",
     unsafe_allow_html=True,
 )
 
-# ─────────────────────────────────────────────
-#  INFO BOX
-# ─────────────────────────────────────────────
 st.markdown("""
 <div class="tr-info">
-  <strong>&#128204; Como funciona</strong><br>
+  <strong>📌 Como funciona</strong><br>
   &bull; Envie um <strong>.zip</strong> contendo os XMLs (pode conter subpastas)<br>
   &bull; Escolha o tamanho do lote: <strong>1.000</strong>, <strong>5.000</strong> ou <strong>10.000</strong> XMLs<br>
-  &bull; O sistema gera um ZIP mestre com os lotes j&aacute; zipados individualmente:<br>
-  &nbsp;&nbsp;&nbsp;
-    <code style="color:#FF8000">lotes_xml.zip</code> &rarr;
-    <code style="color:#FF8000">lote_001.zip</code>,
-    <code style="color:#FF8000">lote_002.zip</code> ...<br>
-  &bull; Cada <code style="color:#FF8000">.zip</code> &eacute; importado diretamente no Dom&iacute;nio<br>
-  &bull; Nenhum XML duplicado ou perdido &mdash; divis&atilde;o exata garantida
+  &bull; O sistema gera um ZIP mestre com os lotes já zipados individualmente<br>
+  &bull; Cada lote é importado diretamente no Domínio<br>
+  &bull; Nenhum XML duplicado ou perdido — divisão exata garantida
 </div>
 """, unsafe_allow_html=True)
+
 
 # ─────────────────────────────────────────────
 #  STEP 1 — UPLOAD
 # ─────────────────────────────────────────────
-st.markdown(
-    '<div class="section-label">1 &mdash; Arquivo de entrada</div>',
-    unsafe_allow_html=True,
-)
+st.markdown('<div class="section-label">1 — Arquivo de entrada</div>', unsafe_allow_html=True)
+
 uploaded_file = st.file_uploader(
     "Selecione ou arraste o arquivo ZIP com os XMLs",
     type=["zip"],
-    help="Apenas arquivos .zip são aceitos. Os XMLs podem estar em subpastas.",
+    help="Apenas arquivos .zip são aceitos.",
 )
 
 # ─────────────────────────────────────────────
-#  STEP 2 — SELEÇÃO DO LOTE
+#  STEP 2 — SELEÇÃO DO LOTE (cards nativos)
 # ─────────────────────────────────────────────
 st.markdown(
-    '<div class="section-label" style="margin-top:24px">2 &mdash; Tamanho do lote</div>',
+    '<div class="section-label" style="margin-top:24px">2 — Tamanho do lote</div>',
     unsafe_allow_html=True,
 )
 
-# Lê XMLs para preview (se já tiver arquivo)
+# Preview de XMLs
 total_xmls_preview = 0
 if uploaded_file is not None:
     try:
@@ -455,102 +367,120 @@ if uploaded_file is not None:
     except Exception:
         total_xmls_preview = 0
 
-# Cards informativos (HTML puro — visual)
-cards_html = '<div class="lote-grid">'
-for label, valor in OPCOES_LOTE.items():
-    if total_xmls_preview > 0:
-        lotes_est = math.ceil(total_xmls_preview / valor)
-        est_txt   = f"&#128200; {lotes_est} lotes gerados"
-    else:
-        est_txt = "&#128200; aguardando arquivo"
+# Estado de seleção
+if "lote_selecionado" not in st.session_state:
+    st.session_state.lote_selecionado = "5.000 XMLs"
 
-    cards_html += f"""
-    <div class="lote-card">
-      <div class="lote-num">{label.replace(' XMLs', '')}</div>
-      <div class="lote-label">XMLs por lote</div>
-      <div class="lote-desc">{DESCRICOES_LOTE[label]}</div>
-      <div class="lote-desc" style="margin-top:8px; color:#FF800077">{est_txt}</div>
-    </div>
-    """
-cards_html += "</div>"
-st.markdown(cards_html, unsafe_allow_html=True)
+opcoes_list  = list(OPCOES_LOTE.keys())
+valores_list = list(OPCOES_LOTE.values())
 
-# Radio funcional para capturar seleção
-opcao_selecionada = st.radio(
-    "Tamanho do lote",
-    options=list(OPCOES_LOTE.keys()),
-    index=1,
-    horizontal=True,
-    label_visibility="collapsed",
-)
+col1, col2, col3 = st.columns(3)
 
-files_per_batch = OPCOES_LOTE[opcao_selecionada]
+for col, label, valor in zip([col1, col2, col3], opcoes_list, valores_list):
+    with col:
+        with st.container(border=True):
+            ativo = label == st.session_state.lote_selecionado
 
-# Preview dinâmico após seleção
+            # Número grande
+            st.markdown(
+                f"<div style='text-align:center; font-size:1.8rem; font-weight:700;"
+                f"color:{'#FF8000' if ativo else '#555555'}; line-height:1; margin-bottom:2px;'>"
+                f"{label.replace(' XMLs','')}</div>",
+                unsafe_allow_html=True,
+            )
+
+            # Label
+            st.markdown(
+                "<div style='text-align:center; font-size:0.68rem; color:#666666;"
+                "text-transform:uppercase; letter-spacing:1.2px;'>XMLs por lote</div>",
+                unsafe_allow_html=True,
+            )
+
+            # Descrição
+            st.markdown(
+                f"<div style='text-align:center; font-size:0.73rem; color:#555555;"
+                f"margin-top:6px;'>{DESCRICOES_LOTE[label]}</div>",
+                unsafe_allow_html=True,
+            )
+
+            # Estimativa
+            if total_xmls_preview > 0:
+                lotes_est = math.ceil(total_xmls_preview / valor)
+                est_txt   = f"📊 {fmt(lotes_est)} lotes"
+            else:
+                est_txt = "📊 aguardando arquivo"
+
+            st.markdown(
+                f"<div style='text-align:center; font-size:0.73rem;"
+                f"color:{'#FF8000AA' if ativo else '#444444'}; margin-top:4px;'>"
+                f"{est_txt}</div>",
+                unsafe_allow_html=True,
+            )
+
+            # Botão de seleção
+            btn_label = "✔ Selecionado" if ativo else "Selecionar"
+            if st.button(btn_label, key=f"btn_{valor}", disabled=ativo):
+                st.session_state.lote_selecionado = label
+                st.rerun()
+
+opcao_selecionada = st.session_state.lote_selecionado
+files_per_batch   = OPCOES_LOTE[opcao_selecionada]
+
+# Preview bar
 if total_xmls_preview > 0:
     lotes_calc  = math.ceil(total_xmls_preview / files_per_batch)
     ultimo_lote = total_xmls_preview - (lotes_calc - 1) * files_per_batch
-    prev_total    = fmt(total_xmls_preview)
-    prev_por_lote = fmt(files_per_batch)
-    prev_ultimo   = fmt(ultimo_lote)
-    prev_lotes    = fmt(lotes_calc)
     st.markdown(f"""
     <div class="preview-bar">
-      &#128202;&nbsp;
-      <span><span class="pv-val">{prev_total}</span> XMLs encontrados</span>
-      <span class="pv-sep">&nbsp;&#9656;&nbsp;</span>
-      <span><span class="pv-val">{prev_lotes}</span> lotes de <span class="pv-val">{prev_por_lote}</span></span>
-      <span class="pv-sep">&nbsp;&#9656;&nbsp;</span>
-      <span>&#250;ltimo lote: <span class="pv-val">{prev_ultimo}</span> XMLs</span>
+      📈 &nbsp;
+      <span><span class="pv-val">{fmt(total_xmls_preview)}</span> XMLs encontrados</span>
+      &nbsp;▶&nbsp;
+      <span><span class="pv-val">{fmt(lotes_calc)}</span> lotes de
+      <span class="pv-val">{fmt(files_per_batch)}</span></span>
+      &nbsp;▶&nbsp;
+      <span>último lote: <span class="pv-val">{fmt(ultimo_lote)}</span> XMLs</span>
     </div>
     """, unsafe_allow_html=True)
+
 
 # ─────────────────────────────────────────────
 #  STEP 3 — PROCESSAR
 # ─────────────────────────────────────────────
 st.markdown(
-    '<div class="section-label" style="margin-top:24px">3 &mdash; Processar</div>',
+    '<div class="section-label" style="margin-top:24px">3 — Processar</div>',
     unsafe_allow_html=True,
 )
 
-process_btn = st.button(
-    f"⚡  Gerar lotes de {opcao_selecionada} zipados individualmente"
-)
+st.markdown('<div class="btn-processar">', unsafe_allow_html=True)
+process_btn = st.button(f"⚡  Gerar lotes de {opcao_selecionada} zipados individualmente")
+st.markdown('</div>', unsafe_allow_html=True)
 
 if process_btn:
 
-    # ── Valida upload ──
     if uploaded_file is None:
         st.markdown(
-            '<div class="tr-error">&#9888; Nenhum arquivo enviado. '
-            'Fa&ccedil;a o upload de um ZIP antes de processar.</div>',
+            '<div class="tr-error">⚠️ Nenhum arquivo enviado. Faça o upload antes de processar.</div>',
             unsafe_allow_html=True,
         )
         st.stop()
 
     file_bytes = uploaded_file.getvalue()
 
-    # ── Lê e valida XMLs ──
     try:
         xml_files = ler_xmls_do_zip(file_bytes)
     except zipfile.BadZipFile:
         st.markdown(
-            '<div class="tr-error">&#9888; O arquivo enviado n&atilde;o &eacute; '
-            'um ZIP v&aacute;lido ou est&aacute; corrompido.</div>',
+            '<div class="tr-error">⚠️ O arquivo não é um ZIP válido ou está corrompido.</div>',
             unsafe_allow_html=True,
         )
         st.stop()
     except Exception as e:
-        st.markdown(
-            f'<div class="tr-error">&#9888; Erro ao ler o arquivo: {e}</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(f'<div class="tr-error">⚠️ Erro ao ler o arquivo: {e}</div>', unsafe_allow_html=True)
         st.stop()
 
     if not xml_files:
         st.markdown(
-            '<div class="tr-error">&#9888; Nenhum arquivo XML encontrado '
-            'dentro do ZIP enviado.</div>',
+            '<div class="tr-error">⚠️ Nenhum arquivo XML encontrado dentro do ZIP.</div>',
             unsafe_allow_html=True,
         )
         st.stop()
@@ -562,8 +492,7 @@ if process_btn:
         for i in range(total_batches)
     ]
 
-    # ── Gera lotes com progresso ──
-    progress_bar = st.progress(0, text="Iniciando compactacao dos lotes...")
+    progress_bar = st.progress(0, text="Iniciando compactação dos lotes...")
     src_buf      = io.BytesIO(file_bytes)
     master_buf   = io.BytesIO()
 
@@ -576,10 +505,8 @@ if process_btn:
                         data    = src_zip.read(xml_path)
                         arcname = os.path.basename(xml_path)
                         batch_zip.writestr(arcname, data)
-
                 lote_name = f"lote_{idx:03d}.zip"
                 master_zip.writestr(lote_name, batch_buf.getvalue())
-
                 progress_bar.progress(
                     idx / total_batches,
                     text=f"Compactando {lote_name} — {len(group)} XMLs ({idx}/{total_batches})",
@@ -588,29 +515,26 @@ if process_btn:
     progress_bar.progress(1.0, text="Todos os lotes compactados com sucesso!")
     master_buf.seek(0)
 
-    # ── Métricas ──
+    # Métricas
     st.markdown("<br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.metric("Total de XMLs",  fmt(total_files))
+        st.metric("Total de XMLs", fmt(total_files))
     with c2:
         st.metric("Lotes gerados",  fmt(total_batches))
     with c3:
         st.metric("Último lote",    f"{fmt(len(groups[-1]))} XMLs")
 
-    # ── Tabela prévia ──
+    # Tabela
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(
-        '<div class="section-label">Pr&eacute;via dos lotes gerados</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown('<div class="section-label">Prévia dos lotes gerados</div>', unsafe_allow_html=True)
 
     rows = ""
     for i, group in enumerate(groups, start=1):
         is_last     = i == total_batches
         badge_class = "badge badge-ok" if is_last else "badge"
         obs = (
-            f"&Uacute;ltimo lote ({fmt(len(group))} de {fmt(files_per_batch)})"
+            f"Último lote ({fmt(len(group))} de {fmt(files_per_batch)})"
             if is_last else "Lote completo"
         )
         rows += f"""
@@ -624,41 +548,31 @@ if process_btn:
     st.markdown(f"""
     <table class="batch-table">
       <thead>
-        <tr>
-          <th>Arquivo ZIP</th>
-          <th>Quantidade</th>
-          <th>Observa&ccedil;&atilde;o</th>
-        </tr>
+        <tr><th>Arquivo ZIP</th><th>Quantidade</th><th>Observação</th></tr>
       </thead>
       <tbody>{rows}</tbody>
     </table>
     """, unsafe_allow_html=True)
 
-    # ── Resumo ──
-    res_total   = fmt(total_files)
-    res_batches = fmt(total_batches)
-    res_limit   = fmt(files_per_batch)
-    res_ultimo  = fmt(len(groups[-1]))
+    # Resumo
     st.markdown(f"""
     <div class="tr-success">
-      <strong>&#10003; Processamento conclu&iacute;do com sucesso!</strong><br>
-      &bull; <strong>{res_total}</strong> XMLs distribu&iacute;dos em
-             <strong>{res_batches}</strong> lotes zipados<br>
-      &bull; Cada lote cont&eacute;m at&eacute;
-             <strong>{res_limit}</strong> arquivos XML j&aacute; compactados<br>
-      &bull; &Uacute;ltimo lote: <strong>{res_ultimo}</strong> arquivo(s)<br>
-      &bull; Estrutura:
-        <code style="color:#90EE90">lotes_xml.zip</code> &rarr;
-        <code style="color:#90EE90">lote_001.zip</code>,
-        <code style="color:#90EE90">lote_002.zip</code> ...<br>
+      <strong>✅ Processamento concluído com sucesso!</strong><br>
+      &bull; <strong>{fmt(total_files)}</strong> XMLs distribuídos em
+             <strong>{fmt(total_batches)}</strong> lotes zipados<br>
+      &bull; Cada lote contém até <strong>{fmt(files_per_batch)}</strong> arquivos XML já compactados<br>
+      &bull; Último lote: <strong>{fmt(len(groups[-1]))}</strong> arquivo(s)<br>
+      &bull; Estrutura: <code style="color:#90EE90">lotes_xml.zip</code>
+             &rarr; <code style="color:#90EE90">lote_001.zip</code>,
+             <code style="color:#90EE90">lote_002.zip</code> ...<br>
       &bull; Nenhum XML duplicado ou perdido
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Download ──
+    # Download
     nome_arquivo = opcao_selecionada.replace(".", "").replace(" ", "_")
     st.download_button(
-        label=f"⬇️  Baixar lotes_xml.zip  ({res_batches} lotes de {opcao_selecionada})",
+        label=f"⬇️  Baixar lotes_xml.zip  ({fmt(total_batches)} lotes de {opcao_selecionada})",
         data=master_buf,
         file_name=f"lotes_xml_{nome_arquivo}.zip",
         mime="application/zip",
@@ -671,7 +585,7 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("""
 <div style="text-align:center; color:#444444; font-size:0.75rem;
             border-top:1px solid #2A2A2A; padding-top:16px;">
-  Dom&iacute;nio Sistemas &middot; Thomson Reuters &nbsp;|&nbsp;
+  Domínio Sistemas &middot; Thomson Reuters &nbsp;|&nbsp;
   Divisor de XML em Lotes &nbsp;|&nbsp;
   <span style="color:#FF800088;">Uso interno</span>
 </div>
